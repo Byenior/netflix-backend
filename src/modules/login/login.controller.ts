@@ -20,6 +20,14 @@ export class LoginController {
     return 'Login test endpoint';
   }
 
+  @Get('/health')
+  getData() {
+    return {
+      status: 'ok',
+      message: 'Login service is running',
+    };
+  }
+
   @Post()
   create(@Body() createLoginDto: CreateLoginDto) {
     return this.loginService.create(createLoginDto);

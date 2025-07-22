@@ -1,26 +1,74 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Injectable()
 export class MovieService {
-  create(createMovieDto: CreateMovieDto) {
-    return 'This action adds a new movie';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createMovieDto: CreateMovieDto) {
+    return this.prisma.movie.create({
+      data: createMovieDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all movie`;
+  async findAll() {
+    return this.prisma.movie.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} movie`;
+  async findOne(id: number) {
+    return this.prisma.movie.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} movie`;
+  async findByGenre(genre: string) {
+    return this.prisma.movie.findMany({
+      where: {
+        genre: {
+          contains: genre,
+          mode: 'insensitive', // case insensitive search
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+  async searchMovies(query: string) {
+    return this.prisma.movie.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async update(id: number, updateMovieDto: UpdateMovieDto) {
+    return this.prisma.movie.update({
+      where: { id },
+      data: updateMovieDto,
+    });
+  }
+
+  async remove(id: number) {
+    return this.prisma.movie.delete({
+      where: { id },
+    });
   }
 }
