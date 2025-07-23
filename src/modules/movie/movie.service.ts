@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
+// import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { CreateMovieDto } from './dto/create-movie.dto';
+
+// export class CreateMovieDtoTmp {
+//   title: string;
+//   description?: string;
+//   genre: string;
+//   releaseYear: number;
+//   duration: number; // Add the required duration property
+// }
 
 @Injectable()
 export class MovieService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createMovieDto: CreateMovieDto) {
+  async createOne(createMovieDto: CreateMovieDto) {
     return this.prisma.movie.create({
+      data: createMovieDto,
+    });
+  }
+
+  async createMany(createMovieDto: CreateMovieDto[]) {
+    return this.prisma.movie.createMany({
       data: createMovieDto,
     });
   }

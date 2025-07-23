@@ -49,9 +49,9 @@ model Movie {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
-  genre       String
-  releaseYear Int
-  duration    Int      // in minutes
+  genre       String?
+  releaseYear Int?
+  duration    Int?     // in minutes
   imageUrl    String?
   videoUrl    String?
   rating      Float?   @default(0)

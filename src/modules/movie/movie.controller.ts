@@ -16,15 +16,27 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
+  // list movie for footer
   @Get('/movies-16')
   getMovies16() {
     return this.movieService.findAll();
   }
 
-  @Post()
-  create(@Body() createMovieDto: CreateMovieDto) {
-    return this.movieService.create(createMovieDto);
+  // add movies - รองรับหลายรูปแบบ
+  @Post('add-movies')
+  create(@Body() body: CreateMovieDto[] | CreateMovieDto) {
+    if (!Array.isArray(body)) {
+      return this.movieService.createOne(body);
+    } else if (body.length > 0) {
+      return this.movieService.createMany(body);
+    }
+
+    throw new Error(
+      'Invalid data format. Expected array of movies or object with movies array.',
+    );
   }
+
+  //================
 
   @Get()
   findAll() {
