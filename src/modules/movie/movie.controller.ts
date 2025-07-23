@@ -16,6 +16,11 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
+  @Get('/movies-16')
+  getMovies16() {
+    return this.movieService.findAll();
+  }
+
   @Post()
   create(@Body() createMovieDto: CreateMovieDto) {
     return this.movieService.create(createMovieDto);

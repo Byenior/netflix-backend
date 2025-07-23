@@ -15,7 +15,7 @@ export class MovieService {
 
   async findAll() {
     return this.prisma.movie.findMany({
-      orderBy: { createdAt: 'desc' },
+      // orderBy: { createdAt: 'desc' },
     });
   }
 
