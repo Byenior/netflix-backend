@@ -4,6 +4,7 @@
 
 import {
   BadRequestException,
+  Body,
   Controller,
   Get,
   Post,
@@ -36,14 +37,10 @@ export class UploadController {
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     }),
   )
-  async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    // console.log('Upload request received:', {
-    //   hasFile: !!file,
-    //   filename: file?.originalname,
-    //   size: file?.size,
-    //   mimetype: file?.mimetype,
-    // });
-
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('folder') folder: string,
+  ) {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
@@ -68,26 +65,33 @@ export class UploadController {
     }
 
     try {
-      // ใช้ uploadFile method แทน
-      const result = await this.s3Service.uploadFile(
+      const key = `${folder}/${Date.now()}-${file.originalname}`;
+      const url = await this.s3Service.uploadFile(
         file.buffer,
-        file.originalname,
+        key,
         file.mimetype,
       );
+      return { url, key };
 
-      console.log('File uploaded successfully:', {
-        filename: file.originalname,
-        size: file.size,
-        mimetype: file.mimetype,
-        url: result,
-      });
+      // const result = await this.s3Service.uploadFile(
+      //   file.buffer,
+      //   folder + '/' + file.originalname,
+      //   file.mimetype,
+      // );
 
-      return {
-        success: true,
-        message: 'File uploaded successfully',
-        url: result,
-        // key: result.key,
-      };
+      // console.log('File uploaded successfully:', {
+      //   filename: file.originalname,
+      //   size: file.size,
+      //   mimetype: file.mimetype,
+      //   url: result,
+      // });
+
+      // return {
+      //   success: true,
+      //   message: 'File uploaded successfully',
+      //   url: result,
+      //   // key: result.key,
+      // };
     } catch (error) {
       console.error('Upload error:', error);
       throw new BadRequestException(`Upload failed: ${error.message}`);

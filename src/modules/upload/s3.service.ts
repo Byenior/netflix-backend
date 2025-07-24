@@ -57,37 +57,6 @@ export class S3Service {
     }
   }
 
-  // เพิ่ม method uploadMulterFile
-  //   async uploadMulterFile(
-  //     file: Express.Multer.File,
-  //   ): Promise<{ url: string; key: string }> {
-  //     try {
-  //       if (!file?.buffer || !file?.originalname) {
-  //         throw new Error('Invalid file: missing buffer or originalname');
-  //       }
-
-  //       const fileExtension = file.originalname.split('.').pop() || 'png';
-  //       const fileName = `movies/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
-
-  //       const command = new PutObjectCommand({
-  //         Bucket: this.bucketName,
-  //         Key: fileName,
-  //         Body: file.buffer,
-  //         ContentType: file.mimetype || 'image/png',
-  //       });
-
-  //       await this.s3Client.send(command);
-
-  //       const url = `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${fileName}`;
-
-  //       return { url, key: fileName };
-  //     } catch (error: unknown) {
-  //       const errorMessage =
-  //         error instanceof Error ? error.message : String(error);
-  //       throw new Error(`Failed to upload to S3: ${errorMessage}`);
-  //     }
-  //   }
-
   async testConnection(): Promise<boolean> {
     try {
       const command = new ListObjectsV2Command({

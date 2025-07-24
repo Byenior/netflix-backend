@@ -3,28 +3,27 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
+  // Patch,
+  // Param,
+  // Delete,
+  // Query,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+// import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   // list movie for footer
-  @Get('/movies-16')
-  getMovies16() {
+  @Get('/list-movies')
+  getMovies() {
     return this.movieService.findAll();
   }
 
-  // add movies - รองรับหลายรูปแบบ
   @Post('add-movies')
-  create(@Body() body: CreateMovieDto[] | CreateMovieDto) {
+  addMovies(@Body() body: CreateMovieDto[] | CreateMovieDto) {
     if (!Array.isArray(body)) {
       return this.movieService.createOne(body);
     } else if (body.length > 0) {
@@ -38,33 +37,33 @@ export class MovieController {
 
   //================
 
-  @Get()
-  findAll() {
-    return this.movieService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.movieService.findAll();
+  // }
 
-  @Get('search')
-  search(@Query('q') query: string) {
-    return this.movieService.searchMovies(query);
-  }
+  // @Get('search')
+  // search(@Query('q') query: string) {
+  //   return this.movieService.searchMovies(query);
+  // }
 
-  @Get('genre/:genre')
-  findByGenre(@Param('genre') genre: string) {
-    return this.movieService.findByGenre(genre);
-  }
+  // @Get('genre/:genre')
+  // findByGenre(@Param('genre') genre: string) {
+  //   return this.movieService.findByGenre(genre);
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.movieService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.movieService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.movieService.update(+id, updateMovieDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
+  //   return this.movieService.update(+id, updateMovieDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.movieService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.movieService.remove(+id);
+  // }
 }

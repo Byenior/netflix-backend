@@ -54,6 +54,7 @@ model Movie {
   duration    Int?     // in minutes
   imageUrl    String?
   videoUrl    String?
+  status Boolean @default(false) // true = available, false = not available
   rating      Float?   @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
